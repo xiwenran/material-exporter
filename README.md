@@ -66,7 +66,7 @@ pyinstaller --windowed --name "资料导出工具" --noconfirm main.py
 
 ## 更名说明
 
-本项目原名为 `ppt-batch-tool`，现更名为 `material-exporter`。如果 GitHub 仓库和本地目录也完成迁移，建议同步更新：
+本项目原名为 `ppt-batch-tool`，现更名为 `material-exporter`。如果本地仍保留旧克隆，请把远端同步到新仓库名：
 
 ```bash
 git remote set-url origin https://github.com/xiwenran/material-exporter.git

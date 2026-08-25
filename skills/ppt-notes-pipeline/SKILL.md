@@ -12,7 +12,7 @@ description: 资料一键制作笔记：把资料文件夹直接导出图片并�
 ## CLI 路径
 
 ```
-python3 ~/ppt-batch-tool/pipeline.py run ...
+python3 ~/material-exporter/pipeline.py run ...
 ```
 
 ## 输出目录结构
@@ -48,7 +48,7 @@ python3 ~/ppt-batch-tool/pipeline.py run ...
 ### Step 1：运行流水线
 
 ```bash
-cd ~/ppt-batch-tool && python3 pipeline.py run \
+cd ~/material-exporter && python3 pipeline.py run \
   --input <资料文件夹> \
   --output <输出目录> \
   [--templates 1 2 3 ...] \
