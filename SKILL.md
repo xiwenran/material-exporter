@@ -16,12 +16,6 @@ description: 资料导出工具：把文件夹中的PPT或Word文件批量导出
 python3 ~/material-exporter/cli.py <子命令>
 ```
 
-旧本地目录如保留兼容链接，也可继续使用：
-
-```
-python3 ~/ppt-batch-tool/cli.py <子命令>
-```
-
 ## 工作流程
 
 ### Step 0：确认参数
