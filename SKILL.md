@@ -13,13 +13,13 @@ description: 资料导出工具：把文件夹中的PPT或Word文件批量导出
 ## CLI 路径
 
 ```
-python3 ~/material-exporter/cli.py <子命令>
-```
-
-如果本地目录尚未改名，兼容路径仍可能是：
-
-```
 python3 ~/ppt-batch-tool/cli.py <子命令>
+```
+
+本地目录完成迁移后，路径改为：
+
+```
+python3 ~/material-exporter/cli.py <子命令>
 ```
 
 ## 工作流程
@@ -39,7 +39,7 @@ python3 ~/ppt-batch-tool/cli.py <子命令>
 ### Step 1：检测环境（首次使用或有疑问时）
 
 ```bash
-cd ~/material-exporter && python3 cli.py detect
+cd ~/ppt-batch-tool && python3 cli.py detect
 ```
 
 确认 PowerPoint 或 LibreOffice 可用再继续。
@@ -47,7 +47,7 @@ cd ~/material-exporter && python3 cli.py detect
 ### Step 2：执行转换
 
 ```bash
-cd ~/material-exporter && python3 cli.py convert \
+cd ~/ppt-batch-tool && python3 cli.py convert \
   --input <输入文件夹> \
   --output <输出目录> \
   --max-slides <页数>
