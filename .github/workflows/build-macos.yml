@@ -33,15 +33,15 @@ jobs:
         run: |
           pyinstaller \
             --windowed \
-            --name "PPT转图片" \
-            --osx-bundle-identifier "com.ppt-batch-tool.app" \
+            --name "资料导出工具" \
+            --osx-bundle-identifier "com.material-exporter.app" \
             --noconfirm \
             --add-data "_build_info.py:." \
             main.py
 
       - name: 打包为 DMG
         run: |
-          APP_NAME="PPT转图片"
+          APP_NAME="资料导出工具"
           DMG_NAME="${APP_NAME}_macos_arm64.dmg"
           DMG_TMP="dist/dmg_tmp"
 
@@ -81,5 +81,5 @@ jobs:
       - name: 保留 Artifact 备份
         uses: actions/upload-artifact@v4
         with:
-          name: PPT转图片_macos_arm64
+          name: 资料导出工具_macos_arm64
           path: dist/${{ env.DMG_NAME }}

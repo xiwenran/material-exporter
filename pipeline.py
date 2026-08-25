@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-PPT → 图片 → 融景合成 一键流水线
+资料 → 图片 → 融景合成 一键流水线
 
 流程：
-  1. 扫描输入（文件夹 或 单个 PPT 文件）中的 PPT 文件
-  2. 用 ppt-batch-tool 导出为 PNG 图片（存到 输出目录/PPT图片/）
+  1. 扫描输入（文件夹 或 单个资料文件）中的支持文件
+  2. 用 material-exporter 导出为 PNG 图片（存到 输出目录/资料图片/）
   3. 用融景对每组图片做透视合成（存到 输出目录/合成图/）
 
 用法：
-  python3 pipeline.py run --input <PPT文件夹> --output <输出目录>
-  python3 pipeline.py run --input <单个PPT文件> --output <输出目录> --templates 3
-  python3 pipeline.py run --input <PPT文件夹> --output <输出目录> --max-slides 10
+  python3 pipeline.py run --input <资料文件夹> --output <输出目录>
+  python3 pipeline.py run --input <单个资料文件> --output <输出目录> --templates 3
+  python3 pipeline.py run --input <资料文件夹> --output <输出目录> --max-slides 10
 """
 
 import argparse
@@ -19,7 +19,7 @@ import os
 import subprocess
 import sys
 
-PPT_TOOL_DIR = os.path.dirname(__file__)
+MATERIAL_EXPORTER_DIR = os.path.dirname(__file__)
 RONGJING_DIR = os.path.expanduser("~/rongjing")
 
 
@@ -76,34 +76,34 @@ def cmd_run(input_path: str, output_dir: str, templates: list[str] | None,
         templates = get_all_templates()
         print(f"将使用 {len(templates)} 个模板：{', '.join(templates)}")
 
-    ppt_images_dir = os.path.join(output_dir, "PPT图片")
+    material_images_dir = os.path.join(output_dir, "资料图片")
     composed_dir = os.path.join(output_dir, "合成图")
-    os.makedirs(ppt_images_dir, exist_ok=True)
+    os.makedirs(material_images_dir, exist_ok=True)
 
     # ──────────────────────────────────────────
-    # Step 1：PPT → 图片
+    # Step 1：资料 → 图片
     # ──────────────────────────────────────────
-    convert_cmd = ["python3", os.path.join(PPT_TOOL_DIR, "cli.py"), "convert",
+    convert_cmd = ["python3", os.path.join(MATERIAL_EXPORTER_DIR, "cli.py"), "convert",
                    "--input", input_folder,
-                   "--output", ppt_images_dir,
+                   "--output", material_images_dir,
                    "--max-slides", str(max_slides)]
     if only_file:
         convert_cmd += ["--only-file", only_file]
 
-    rc = run(convert_cmd, f"Step 1 / 2  PPT 导出为图片（最多 {max_slides} 页/PPT）")
+    rc = run(convert_cmd, f"Step 1 / 2  资料导出为图片（每个文件最多 {max_slides} 页）")
     if rc != 0:
-        print("\n[错误] PPT 转图片失败，流水线中止", file=sys.stderr)
+        print("\n[错误] 资料转图片失败，流水线中止", file=sys.stderr)
         sys.exit(rc)
 
     # 找到所有导出成功的图片子文件夹
     image_subfolders = sorted([
-        d for d in os.listdir(ppt_images_dir)
-        if os.path.isdir(os.path.join(ppt_images_dir, d))
+        d for d in os.listdir(material_images_dir)
+        if os.path.isdir(os.path.join(material_images_dir, d))
         and not d.startswith(".")
     ])
 
     if not image_subfolders:
-        print("\n[错误] PPT 转图片后没有找到任何输出文件夹", file=sys.stderr)
+        print("\n[错误] 资料转图片后没有找到任何输出文件夹", file=sys.stderr)
         sys.exit(1)
 
     print(f"\n导出了 {len(image_subfolders)} 组图片：{image_subfolders}")
@@ -113,7 +113,7 @@ def cmd_run(input_path: str, output_dir: str, templates: list[str] | None,
     # ──────────────────────────────────────────
     total_groups = len(image_subfolders)
     for i, group in enumerate(image_subfolders, 1):
-        group_input = os.path.join(ppt_images_dir, group)
+        group_input = os.path.join(material_images_dir, group)
         group_output = os.path.join(composed_dir, group)
 
         rc = run(
@@ -133,7 +133,7 @@ def cmd_run(input_path: str, output_dir: str, templates: list[str] | None,
     print(f"\n{'='*50}")
     print("✅ 流水线完成！")
     print(f"{'='*50}")
-    print(f"PPT 图片：{ppt_images_dir}")
+    print(f"资料图片：{material_images_dir}")
     print(f"合成结果：{composed_dir}")
     print(f"  ├ 组数：{total_groups}")
     print(f"  ├ 模板数：{len(templates)}")
@@ -149,16 +149,16 @@ def cmd_run(input_path: str, output_dir: str, templates: list[str] | None,
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PPT → 图片 → 融景合成 一键流水线")
+    parser = argparse.ArgumentParser(description="资料 → 图片 → 融景合成 一键流水线")
     sub = parser.add_subparsers(dest="cmd")
 
     p = sub.add_parser("run", help="运行完整流水线")
-    p.add_argument("--input", required=True, help="PPT 文件所在文件夹（递归扫描），或单个 PPT 文件路径")
-    p.add_argument("--output", required=True, help="输出根目录（自动创建 PPT图片/ 和 合成图/ 子目录）")
+    p.add_argument("--input", required=True, help="资料文件所在文件夹（递归扫描），或单个资料文件路径")
+    p.add_argument("--output", required=True, help="输出根目录（自动创建 资料图片/ 和 合成图/ 子目录）")
     p.add_argument("--templates", nargs="+", default=None,
                    help="融景模板名称，不填则使用全部可用模板")
     p.add_argument("--max-slides", type=int, default=17,
-                   help="每个 PPT 最多导出页数（默认 17）")
+                   help="每个文件最多导出页数（默认 17）")
     p.add_argument("--format", default="JPEG", choices=["PNG", "JPEG"],
                    help="合成图输出格式（默认 JPEG）")
 

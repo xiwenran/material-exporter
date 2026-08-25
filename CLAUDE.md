@@ -1,26 +1,27 @@
-# PPT批量工具 — Claude 项目说明
+# material-exporter — Claude 项目说明
 
 ## 项目概述
 
-PPT 批量导出图片工具：把文件夹中的 PPT 文件批量导出为 PNG 图片，支持递归扫描子文件夹。
+资料导出工具：把文件夹中的资料文件批量导出为 PNG 图片，支持递归扫描子文件夹。目前支持 PPT / Word，原项目名为 `ppt-batch-tool`。
 
 ## 重要约束
 
-- 支持 `.ppt` `.pptx` `.pps` `.ppsx` 格式
-- 每个 PPT 默认导出前 17 页为 PNG
+- 支持 `.ppt` `.pptx` `.pps` `.ppsx` `.doc` `.docx` `.docm` `.dot` `.dotx` `.dotm` 格式
+- 每个文件默认导出前 17 页为 PNG
 - 转换引擎自动检测：macOS 优先 PowerPoint → 备选 LibreOffice；Windows 优先 WPS → PowerPoint → LibreOffice
 - CLI 入口：`python main.py`
 - 打包：macOS 用 `bash build_app.sh`，Windows 推 main 分支 GitHub Actions 自动打包
-- 输出结构：`导出图片/{课件名称}/1.png, 2.png, ...`
+- 输出结构：`导出图片/{资料名称}/1.png, 2.png, ...`
 
-**本地路径**：`~/ppt-batch-tool/`（GitHub 仓库名 `xiwenran/ppt-batch-tool`，与本地目录名一致）
+**本地路径**：建议迁移为 `~/material-exporter/`（旧路径 `~/ppt-batch-tool/`）
+**GitHub 仓库名**：建议迁移为 `xiwenran/material-exporter`（旧名 `xiwenran/ppt-batch-tool`）
 **主要流程入口**：`python main.py`（批量导出图片 CLI）
 
 ---
 
 ## 项目坐标（AI 找本项目信息的固定入口）
 
-Obsidian 里本项目名为**ppt-batch-tool**。找本项目的方案/进度/风险 → 直接读这几个路径，不用扫全库：
+Obsidian 里本项目记录暂仍在旧目录 **ppt-batch-tool**；仓库内项目已更名为 **material-exporter**，等待知识库受控迁移后再切到新目录。找本项目的方案/进度/风险 → 直接读这几个路径，不用扫全库：
 
 | 类别 | 路径 |
 |---|---|

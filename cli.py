@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PPT / Word 转图片 CLI — 命令行接口，供 Claude Code Skill 调用。
+资料导出工具 CLI — 命令行接口，供 Claude Code Skill 调用。
 不依赖 PyQt6，直接调用 core/ 的转换函数。
 
 用法：
@@ -60,12 +60,12 @@ def cmd_convert(input_folder: str, output_dir: str, max_slides: int, only_file: 
             print(f"[错误] 在 {input_folder} 中没有找到文件：{only_file}", file=sys.stderr)
             sys.exit(1)
     if not source_files:
-        print(f"[错误] 在 {input_folder} 中没有找到受支持的 PPT / Word 文件", file=sys.stderr)
+        print(f"[错误] 在 {input_folder} 中没有找到受支持的资料文件", file=sys.stderr)
         sys.exit(1)
 
     os.makedirs(output_dir, exist_ok=True)
     total = len(source_files)
-    print(f"找到 {total} 个 PPT / Word 文件，使用引擎：{backends[0]}")
+    print(f"找到 {total} 个资料文件，使用引擎：{backends[0]}")
     print(f"输出目录：{output_dir}\n")
 
     soffice_path = _find_libreoffice()
@@ -82,7 +82,7 @@ def cmd_convert(input_folder: str, output_dir: str, max_slides: int, only_file: 
             ]
             if not eligible:
                 continue
-            tmp_pdf_dir = os.path.join(output_dir, f".ppt2img_{backend}_pdf_tmp")
+            tmp_pdf_dir = os.path.join(output_dir, f".material_exporter_{backend}_pdf_tmp")
             tmp_pdf_dirs.append(tmp_pdf_dir)
             print(f"正在通过 {label} 批量导出 PDF（此步骤可能弹出授权窗口，点一次允许即可）...")
             try:
@@ -158,13 +158,13 @@ def cmd_convert(input_folder: str, output_dir: str, max_slides: int, only_file: 
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PPT / Word 转图片命令行工具")
+    parser = argparse.ArgumentParser(description="资料导出工具命令行接口")
     sub = parser.add_subparsers(dest="cmd")
 
     sub.add_parser("detect", help="检测可用的转换引擎")
 
-    p = sub.add_parser("convert", help="批量转换 PPT / Word 为 PNG 图片")
-    p.add_argument("--input", required=True, help="包含 PPT / Word 文件的文件夹（递归扫描）")
+    p = sub.add_parser("convert", help="批量转换支持的资料文件为 PNG 图片")
+    p.add_argument("--input", required=True, help="包含资料文件的文件夹（递归扫描）")
     p.add_argument("--output", required=True, help="图片输出目录")
     p.add_argument("--max-slides", type=int, default=17, help="每个文件最多导出页数（默认 17）")
     p.add_argument("--only-file", default=None, help="只处理指定文件名（单文件模式，由 pipeline 传入）")

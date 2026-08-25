@@ -5,11 +5,11 @@
 set -e
 cd "$(dirname "$0")"
 
-APP_NAME="PPT转图片"
+APP_NAME="资料导出工具"
 ARCH=$(uname -m)
 
 echo "=========================================="
-echo "  PPT 批量导出图片工具 — macOS 打包脚本"
+echo "  资料导出工具 — macOS 打包脚本"
 echo "  当前架构: $ARCH"
 echo "=========================================="
 echo ""

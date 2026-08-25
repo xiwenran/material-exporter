@@ -1,6 +1,6 @@
 ---
 name: ppt-notes-pipeline
-description: PPT一键制作笔记：把PPT文件夹直接导出图片并用融景全部模板合成，一句话完成完整流水线。触发词：一键制作笔记、PPT制作笔记、导出并合成、PPT转笔记图、把PPT做成笔记、批量制作笔记图、全流程制作。
+description: 资料一键制作笔记：把资料文件夹直接导出图片并用融景全部模板合成，一句话完成完整流水线。触发词：一键制作笔记、资料制作笔记、PPT制作笔记、导出并合成、PPT转笔记图、把PPT做成笔记、批量制作笔记图、全流程制作。
 ---
 
 # PPT → 笔记制作 一键流水线 Skill
@@ -12,24 +12,24 @@ description: PPT一键制作笔记：把PPT文件夹直接导出图片并用融�
 ## CLI 路径
 
 ```
-python3 ~/ppt-batch-tool/pipeline.py run ...
+python3 ~/material-exporter/pipeline.py run ...
 ```
 
 ## 输出目录结构
 
 ```
 输出目录/
-  PPT图片/              ← Step1 中间产物（PPT导出的原始PNG）
-    课件A/
+  资料图片/              ← Step1 中间产物（资料导出的原始PNG）
+    资料A/
       1.png  2.png ...
-    课件B/
+    资料B/
       1.png  2.png ...
   合成图/               ← Step2 最终产物（融景合成完的笔记图）
-    课件A/
+    资料A/
       1/  1.jpg 2.jpg ...    ← 模板1
       2/  1.jpg 2.jpg ...    ← 模板2
       ...
-    课件B/
+    资料B/
       ...
 ```
 
@@ -38,7 +38,7 @@ python3 ~/ppt-batch-tool/pipeline.py run ...
 ### Step 0：确认参数
 
 用户需要提供：
-1. **输入**：含 PPT 文件的目录（递归扫描），**或单个 PPT 文件路径**
+1. **输入**：含资料文件的目录（递归扫描），**或单个资料文件路径**
 2. **输出目录**：没有指定时默认用 `输入目录/../笔记制作输出/`
 
 可选参数（不说就用默认值）：
@@ -48,8 +48,8 @@ python3 ~/ppt-batch-tool/pipeline.py run ...
 ### Step 1：运行流水线
 
 ```bash
-cd ~/ppt-batch-tool && python3 pipeline.py run \
-  --input <PPT文件夹> \
+cd ~/material-exporter && python3 pipeline.py run \
+  --input <资料文件夹> \
   --output <输出目录> \
   [--templates 1 2 3 ...] \
   [--max-slides 17] \
@@ -64,7 +64,7 @@ cd ~/ppt-batch-tool && python3 pipeline.py run \
 - 处理了几个 PPT
 - 每个 PPT 导出了几页
 - 合成了多少张图（组数 × 模板数 × 页数）
-- PPT图片 和 合成图 分别在哪个目录
+- 资料图片 和 合成图 分别在哪个目录
 
 **Token 节制 — Batch Summary 串联**：全链路完成后，用以下结构汇总给上下文，不展开各步骤的完整文件列表：
 
@@ -82,7 +82,7 @@ cd ~/ppt-batch-tool && python3 pipeline.py run \
 }
 ```
 
-- `ppt_export` 数据来自输出目录下的 `convert_summary.json`（由 ppt-batch-tool CLI 自动生成）。
+- `ppt_export` 数据来自输出目录下的 `convert_summary.json`（由 material-exporter CLI 自动生成）。
 - `rongjing` 数据由融景 CLI 返回的摘要填入；`note_count` = 主题数 × 模板数 × 页数。
 - 后续若衔接知发上传，在 batch summary 中追加 `"zhifa"` 字段（record_count / risk_count / summary_path），由 zhifa-pipeline skill 填写。
 
@@ -105,4 +105,4 @@ cd ~/ppt-batch-tool && python3 pipeline.py run \
 - macOS 上 PowerPoint 首次运行会弹授权窗口，告知用户点「允许」即可
 - **单文件模式不会触发额外授权**：pipeline 不复制文件，直接在原始目录操作（用 `--only-file` 过滤）
 - 融景模板需要提前在融景 App 里创建好（标注背景图角点）
-- 输出的 PPT图片/ 目录保留，可以单独拿来用（如直接发给融景做其他合成）
+- 输出的 资料图片/ 目录保留，可以单独拿来用（如直接发给融景做其他合成）

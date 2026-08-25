@@ -1,10 +1,10 @@
-# PPT / Word 批量导出图片工具
+# 资料导出工具
 
-把文件夹中的 PPT 和 Word 文件批量导出为 PNG 图片，支持递归扫描子文件夹。
+原 `ppt-batch-tool`，现更名为 `material-exporter`。工具从 PPT 批量转图片扩展为更通用的资料导出工具，目前支持 PPT / Word 导出为 PNG 图片，并支持递归扫描子文件夹。
 
 ## 功能
 
-- 递归扫描指定文件夹中所有 PPT / Word 文件
+- 递归扫描指定文件夹中所有支持的资料文件
   （`.ppt` `.pptx` `.pps` `.ppsx` `.doc` `.docx` `.docm` `.dot` `.dotx` `.dotm`）
 - 自动跳过 Office 临时文件（`~$` 开头）
 - 支持单个文件直接输入（通过 CLI `--only-file`）
@@ -28,7 +28,7 @@
 ## 使用方法
 
 1. 双击打开程序
-2. 选择包含 PPT / Word 文件的文件夹
+2. 选择包含资料文件的文件夹
 3. 设置导出页数（默认 17 页）
 4. 点击「开始转换」
 5. 等待完成，查看结果
@@ -49,30 +49,40 @@ python main.py
 
 ```bash
 bash build_app.sh
-# 生成 dist/PPT转图片.app 和 dist/PPT转图片_arm64.dmg
+# 生成 dist/资料导出工具.app 和 dist/资料导出工具_arm64.dmg
 ```
 
 首次打开未签名的 `.app`：右键点击 → 打开 → 打开。
 
 ### Windows
 
-推送到 `main` 分支后，GitHub Actions 自动打包，在 Actions 页面下载 `PPT转图片_windows_x64.zip`。
+推送到 `main` 分支后，GitHub Actions 自动打包，在 Actions 页面下载 `资料导出工具_windows_x64.zip`。
 
 或本地打包：
 ```bash
 pip install pyinstaller
-pyinstaller --windowed --name "PPT转图片" --noconfirm main.py
+pyinstaller --windowed --name "资料导出工具" --noconfirm main.py
 ```
+
+## 更名说明
+
+本项目原名为 `ppt-batch-tool`，现更名为 `material-exporter`。如果 GitHub 仓库和本地目录也完成迁移，建议同步更新：
+
+```bash
+git remote set-url origin https://github.com/xiwenran/material-exporter.git
+```
+
+旧仓库名、旧本地路径和旧 Skill 名只作为兼容备注保留。
 
 ## 输出结构
 
 ```
 导出图片/
-├── 课件名称A/
+├── 资料名称A/
 │   ├── 1.png
 │   ├── 2.png
 │   └── ...
-├── 课件名称B/
+├── 资料名称B/
 │   ├── 1.png
 │   └── ...
 └── ...
@@ -103,13 +113,13 @@ python3 cli.py detect
 ### 批量转换
 
 ```bash
-# 文件夹模式（递归扫描所有 PPT / Word）
+# 文件夹模式（递归扫描所有支持的资料文件）
 python3 cli.py convert \
   --input <源文件夹> \
   --output <图片输出目录> \
   --max-slides 17
 
-# 单文件模式（PPT / Word 都支持）
+# 单文件模式（目前支持 PPT / Word）
 python3 cli.py convert \
   --input <源文件夹> \
   --output <图片输出目录> \
@@ -120,23 +130,23 @@ python3 cli.py convert \
 
 ### 与融景联动（pipeline.py）
 
-`pipeline.py` 把「PPT 导出图片」和「融景透视合成」串联成一键流水线：
+`pipeline.py` 把「资料导出图片」和「融景透视合成」串联成一键流水线：
 
 ```bash
-# 整个文件夹（使用全部融景模板）
+# 整个资料文件夹（使用全部融景模板）
 python3 pipeline.py run \
-  --input <PPT文件夹> \
+  --input <资料文件夹> \
   --output <输出目录>
 
-# 单个 PPT（指定模板）
+# 单个资料文件（指定模板）
 python3 pipeline.py run \
-  --input <单个PPT文件.pptx> \
+  --input <单个资料文件.pptx> \
   --output <输出目录> \
   --templates 3
 
 # 自定义页数和模板
 python3 pipeline.py run \
-  --input <PPT文件夹> \
+  --input <资料文件夹> \
   --output <输出目录> \
   --templates 1 2 3 \
   --max-slides 10
@@ -145,11 +155,11 @@ python3 pipeline.py run \
 输出结构：
 ```
 输出目录/
-  PPT图片/          ← 原始导出的 PNG（可单独使用）
-    课件A/
+  资料图片/          ← 原始导出的 PNG（可单独使用）
+    资料A/
       1.png  2.png ...
   合成图/           ← 融景合成完的成品
-    课件A/
+    资料A/
       3/            ← 模板编号
         1.jpg  2.jpg ...
 ```
@@ -158,7 +168,7 @@ python3 pipeline.py run \
 
 已提供两个 Skill，在 Claude Code 中可直接用自然语言触发：
 
-- `ppt-batch-tool`（`~/.claude/skills/ppt-batch-tool/SKILL.md`）：仅导出图片
+- `material-exporter`（原 `ppt-batch-tool`）：仅导出图片
   > 「把这个文件夹里所有 PPT / Word 转成图片，输出到 Downloads」
 
 - `ppt-notes-pipeline`（`~/.claude/skills/ppt-notes-pipeline/SKILL.md`）：导出 + 融景合成一键完成

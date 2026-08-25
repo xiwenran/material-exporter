@@ -1,14 +1,22 @@
 ---
-name: ppt-batch-tool
-description: PPT/Word批量转图片：把文件夹中的PPT或Word文件批量导出为PNG图片，自动清理文件名。触发词：PPT转图片、Word转图片、批量导出PPT、批量导出Word、PPT转PNG、Word转PNG、把课件转成图片、导出幻灯片截图。
+name: material-exporter
+description: 资料导出工具：把文件夹中的PPT或Word文件批量导出为PNG图片，自动清理文件名。触发词：资料导出、资料转图片、PPT转图片、Word转图片、批量导出PPT、批量导出Word、PPT转PNG、Word转PNG、把课件转成图片、导出幻灯片截图。
 ---
 
-# PPT / Word 批量转图片 Skill
+# 资料导出工具 Skill
 
-将指定文件夹下的所有 PPT / Word 文件递归扫描并导出为 PNG 图片。
+将指定文件夹下所有支持的资料文件递归扫描并导出为 PNG 图片。
 使用 Microsoft PowerPoint / Word 或 LibreOffice 作为转换引擎。
 
+旧名：`ppt-batch-tool`。当前项目名：`material-exporter`。
+
 ## CLI 路径
+
+```
+python3 ~/material-exporter/cli.py <子命令>
+```
+
+如果本地目录尚未改名，兼容路径仍可能是：
 
 ```
 python3 ~/ppt-batch-tool/cli.py <子命令>
@@ -24,14 +32,14 @@ python3 ~/ppt-batch-tool/cli.py <子命令>
 - "帮我导出 ~/Downloads/课件/ 里所有 PPT 的前10页"
 
 需要确认两件事：
-1. **输入文件夹**：哪个目录（递归扫描，会找到所有子文件夹里的 PPT / Word）
-2. **输出目录**：没有指定时默认用 `输入文件夹/../PPT图片/`
+1. **输入文件夹**：哪个目录（递归扫描，会找到所有子文件夹里的支持文件）
+2. **输出目录**：没有指定时默认用 `输入文件夹/../资料图片/`
 3. **最多导出页数**：默认 17 页，用户有特殊需求时调整
 
 ### Step 1：检测环境（首次使用或有疑问时）
 
 ```bash
-cd ~/ppt-batch-tool && python3 cli.py detect
+cd ~/material-exporter && python3 cli.py detect
 ```
 
 确认 PowerPoint 或 LibreOffice 可用再继续。
@@ -39,7 +47,7 @@ cd ~/ppt-batch-tool && python3 cli.py detect
 ### Step 2：执行转换
 
 ```bash
-cd ~/ppt-batch-tool && python3 cli.py convert \
+cd ~/material-exporter && python3 cli.py convert \
   --input <输入文件夹> \
   --output <输出目录> \
   --max-slides <页数>
@@ -62,11 +70,11 @@ cd ~/ppt-batch-tool && python3 cli.py convert \
 
 ```
 输出目录/
-  课件名称A/     ← 文件名已自动清理（去掉版权声明、@用户名、平台标记等）
+  资料名称A/     ← 文件名已自动清理（去掉版权声明、@用户名、平台标记等）
     1.png
     2.png
     ...
-  课件名称B/
+  资料名称B/
     1.png
     ...
 ```

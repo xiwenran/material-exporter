@@ -14,7 +14,7 @@ def scan_ppt_files(folder: str) -> List[str]:
 
 
 def scan_supported_files(folder: str) -> List[str]:
-    """递归扫描 folder 下所有受支持的 PPT / Word 文件。"""
+    """递归扫描 folder 下所有受支持的资料文件。"""
     return scan_files_by_extensions(folder, SUPPORTED_EXTENSIONS)
 
 

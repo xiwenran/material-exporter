@@ -1,4 +1,4 @@
-"""PPT / Word 批量导出图片 — 主窗口。"""
+"""资料导出工具 — 主窗口。"""
 
 import os
 import subprocess
@@ -162,11 +162,11 @@ class MainWindow(QMainWindow):
 
     def __init__(self, build: str = "dev"):
         super().__init__()
-        self.setWindowTitle(f"PPT / Word 转图片  [{build}]")
+        self.setWindowTitle(f"资料导出工具  [{build}]")
         self.setMinimumSize(640, 700)
         self.resize(700, 820)
 
-        self._settings = QSettings("ppt2img", "PPT2Img")
+        self._settings = QSettings("material-exporter", "MaterialExporter")
         self._worker: Optional[ConvertWorker] = None
         self._source_files: List[str] = []
         self._backends: List[str] = []  # 所有检测到的后端
@@ -262,12 +262,12 @@ class MainWindow(QMainWindow):
     # --- Card 1: 选择文件夹 ---
     def _build_folder_card(self):
         card, lay = self._make_card()
-        h = QLabel("步骤 1: 选择 PPT / Word 文件夹")
+        h = QLabel("步骤 1: 选择资料文件夹")
         h.setObjectName("h2")
         lay.addWidget(h)
 
         hint = QLabel(
-            "递归扫描文件夹中所有 PPT / Word 文件"
+            "递归扫描文件夹中所有支持的资料文件"
             "（.ppt .pptx .pps .ppsx .doc .docx .docm .dot .dotx .dotm）"
         )
         hint.setObjectName("hint")
@@ -414,7 +414,7 @@ class MainWindow(QMainWindow):
                 self._engine_badge.setText(f"已就绪: {primary}")
                 self._engine_badge.setObjectName("badge_green")
                 self._engine_hint.setText(
-                    f"检测到 {primary}，将按文件类型导出 PPT / Word 页面。\n"
+                    f"检测到 {primary}，将按文件类型导出资料页面。\n"
                     f"如果转换失败，会自动尝试其他可用引擎。"
                 )
             else:
@@ -513,9 +513,9 @@ class MainWindow(QMainWindow):
     def _browse_folder(self):
         last = self._settings.value("last_input_dir", "")
         if sys.platform == "darwin":
-            folder = self._mac_pick_folder("选择包含 PPT / Word 文件的文件夹", last)
+            folder = self._mac_pick_folder("选择包含资料文件的文件夹", last)
         else:
-            folder = QFileDialog.getExistingDirectory(self, "选择 PPT / Word 文件夹", last)
+            folder = QFileDialog.getExistingDirectory(self, "选择资料文件夹", last)
         if not folder:
             return
 
@@ -526,10 +526,10 @@ class MainWindow(QMainWindow):
         self._source_files = scan_supported_files(folder)
         n = len(self._source_files)
         if n > 0:
-            self._scan_badge.setText(f"找到 {n} 个 PPT / Word 文件")
+            self._scan_badge.setText(f"找到 {n} 个资料文件")
             self._scan_badge.setObjectName("badge_green")
         else:
-            self._scan_badge.setText("未找到 PPT / Word 文件")
+            self._scan_badge.setText("未找到支持的资料文件")
             self._scan_badge.setObjectName("badge_red")
         self._scan_badge.style().unpolish(self._scan_badge)
         self._scan_badge.style().polish(self._scan_badge)
@@ -642,7 +642,7 @@ class MainWindow(QMainWindow):
         total_pages = sum(r.pages_exported for r in results)
 
         summary = (
-            f"共处理 <b>{total}</b> 个 PPT / Word 文件，"
+            f"共处理 <b>{total}</b> 个资料文件，"
             f"<span style='color:{_GREEN}'>成功 {success} 个</span>"
         )
         if fail > 0:
